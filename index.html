@@ -281,7 +281,19 @@
 <script>
   var PHONE = "201068494171";
   function fmt(n) { return Math.round(n).toLocaleString("ar-EG"); }
-  function wa(msg) { return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg); }
+  function isMobile() { return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent); }
+  function openWa(msg) {
+    var text = encodeURIComponent(msg);
+    if (isMobile()) {
+      window.open("https://wa.me/" + PHONE + "?text=" + text, "_blank");
+    } else {
+      window.location.href = "whatsapp://send?phone=" + PHONE + "&text=" + text;
+      setTimeout(function () {
+        var fb = document.getElementById("waFallback");
+        if (fb) fb.style.display = "block";
+      }, 2000);
+    }
+  }
   function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
 
   function card(title, comp, valText, cls) {
@@ -357,8 +369,10 @@
       '<div class="warn-line">' + returnInsight + '</div>' +
       (stockInsight ? '<div class="warn-line">' + stockInsight + '</div>' : "") +
       '<div class="warn-line">' + warn + '</div>' +
-      '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
-      wa("أريد زيادة ربح متجري — صافي ربحي " + fmt(profit) + " ج.م بهامش " + margin + "% ومعدل مرتجعات " + returnRate + "%" + (stock > 0 ? " وعندي " + fmt(stock) + " ج.م مخزون راكد" : "")) + '">عايز تعرف إزاي تزوّد الرقم ده؟ كلمنا</a>';
+      '<a class="btn accent block" style="margin-top:12px;" id="ctaProfit" href="javascript:void(0)">عايز تعرف إزاي تزوّد الرقم ده؟ كلمنا</a>';
+    document.getElementById("ctaProfit").onclick = function () {
+      openWa("أريد زيادة ربح متجري — صافي ربحي " + fmt(profit) + " ج.م بهامش " + margin + "% ومعدل مرتجعات " + returnRate + "%" + (stock > 0 ? " وعندي " + fmt(stock) + " ج.م مخزون راكد" : ""));
+    };
 
     var fixed = val("fixed"), aov = val("aov"), vc = val("varCost"), ad = val("adPerOrder");
     var bepBox = document.getElementById("bepReport");
@@ -368,8 +382,10 @@
         bepBox.innerHTML =
           card("ربح الطلب الواحد", "سعر الطلب − تكلفته − إعلانه", fmt(unit) + " ج.م", "neg") +
           card("النتيجة — تحذير تسعير", "كل طلب يبيعه الآن يزيد الخسارة", "راجع تسعيرك", "final") +
-          '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
-          wa("طلبي أقل من تكلفته — أحتاج مراجعة تسعير متجري عاجلاً") + '">ساعوني في مراجعة التسعير</a>';
+          '<a class="btn accent block" style="margin-top:12px;" id="ctaPrice" href="javascript:void(0)">ساعوني في مراجعة التسعير</a>';
+        document.getElementById("ctaPrice").onclick = function () {
+          openWa("طلبي أقل من تكلفته — أحتاج مراجعة تسعير متجري عاجلاً");
+        };
       } else {
         var orders = Math.ceil(fixed / unit);
         var daily = Math.ceil(orders / 30);
@@ -383,8 +399,10 @@
           card("الطلبات المطلوبة شهرياً", "المكون: <b>الثابت ÷ ربح الطلب</b>", orders + " طلب") +
           card("النتيجة — مبيعات التعادل الشهرية", "بعدها يبدأ ربحك الصافي", fmt(orders * aov) + " ج.م", "final") +
           '<div class="warn-line">أي ما يعادل ' + daily + ' طلب يومياً</div>' +
-          '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
-          wa("أريد تجاوز نقطة التعادل — نقطة تعادلي " + orders + " طلب شهرياً") + '">عايز أتجاوز نقطة التعادل؟ كلمنا</a>';
+          '<a class="btn accent block" style="margin-top:12px;" id="ctaBep" href="javascript:void(0)">عايز أتجاوز نقطة التعادل؟ كلمنا</a>';
+        document.getElementById("ctaBep").onclick = function () {
+          openWa("أريد تجاوز نقطة التعادل — نقطة تعادلي " + orders + " طلب شهرياً");
+        };
       }
     } else {
       bepBox.innerHTML =
@@ -405,7 +423,7 @@
   }
 
   document.getElementById("waMain").onclick = function () {
-    window.open(wa("أريد تجربة Arym Vitals على متجري"), "_blank");
+    openWa("أريد تجربة Arym Vitals على متجري");
   };
 </script>
 </body>
