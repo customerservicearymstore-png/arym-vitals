@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arym Vitals — متجرك يربح أكثر</title>
+<meta name="description" content="اعرف ربحك الصافي الحقيقي ونقطة تعادل متجرك على EasyOrders — مجاناً في دقيقتين">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #101d33;
+    --muted: #5b6b84;
+    --card: #ffffff;
+    --border: #dfe6f0;
+    --primary: #16337a;
+    --primary-dark: #0e2458;
+    --primary-soft: #e9effb;
+    --accent: #f0762c;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Cairo", sans-serif;
+    background:
+      radial-gradient(ellipse 60% 40% at 85% 0%, rgba(22, 51, 122, 0.06), transparent),
+      radial-gradient(ellipse 50% 35% at 10% 15%, rgba(240, 118, 44, 0.04), transparent),
+      var(--bg);
+    color: var(--ink);
+    line-height: 1.75;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
+
+  header { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-weight: 900; font-size: 1.25rem; }
+  .logo em { font-style: normal; color: var(--primary); }
+  .tag { font-size: 0.75rem; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px; background: var(--card); }
+
+  .hero { text-align: center; padding: 40px 0 30px; }
+  .pill {
+    display: inline-block; font-size: 0.8rem; font-weight: 700;
+    color: var(--primary); background: var(--primary-soft);
+    border-radius: 999px; padding: 6px 18px; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.4; }
+  .hero h1 mark { background: none; color: var(--primary); }
+  .hero p.sub { color: var(--muted); font-size: 1.02rem; margin-top: 12px; max-width: 600px; margin-inline: auto; }
+
+  .screen { display: none; }
+  .screen.on { display: block; animation: rise 0.45s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; } }
+
+  .panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 22px; padding: 26px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 14px 36px rgba(16,24,40,0.07);
+  }
+
+  details.acc { border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; background: #fbfcfe; overflow: hidden; }
+  details.acc summary {
+    list-style: none; cursor: pointer; padding: 14px 16px;
+    font-weight: 800; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::after { content: "+"; font-size: 1.3rem; color: var(--muted); transition: transform 0.2s; }
+  details.acc[open] summary::after { content: "−"; }
+  details.acc .acc-body { padding: 2px 16px 14px; }
+  details.acc .hint { font-size: 0.75rem; color: var(--muted); font-weight: 400; display: block; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; }
+  .field label small { color: var(--muted); font-weight: 400; }
+  .field input {
+    width: 100%; padding: 11px 14px; font-size: 1rem; font-family: inherit;
+    border: 1px solid var(--border); border-radius: 10px; background: #fff;
+    color: var(--ink); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+  .field input::placeholder { color: #a8b4c4; font-size: 0.85rem; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 32px; background: var(--primary); color: #fff;
+    font-weight: 700; font-size: 1rem; border-radius: var(--radius);
+    text-decoration: none; border: 0; cursor: pointer; font-family: inherit;
+    transition: transform 0.15s, filter 0.2s;
+  }
+  .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .btn:active { transform: scale(0.98); }
+  .btn.block { width: 100%; }
+  .btn.accent { background: var(--accent); }
+  .btn.ghost { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+  .note { display: block; margin-top: 8px; font-size: 0.75rem; color: var(--muted); text-align: center; }
+
+  .auto-banner {
+    background: linear-gradient(135deg, var(--primary-soft), #fff4ec);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    text-align: center;
+    color: var(--ink);
+    animation: rise 0.6s ease 0.3s backwards;
+  }
+  .auto-banner b { color: var(--primary); }
+
+  .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .two-cols { grid-template-columns: 1fr; } }
+  .col { min-width: 0; }
+  .col-head {
+    text-align: center; font-weight: 900; font-size: 0.95rem;
+    color: var(--primary); background: var(--primary-soft);
+    border-radius: 12px; padding: 9px; margin-bottom: 12px;
+  }
+
+  .rep-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 15px 18px; margin-bottom: 10px;
+  }
+  .rep-card h4 { font-size: 0.95rem; font-weight: 800; }
+  .rep-card .comp { font-size: 0.78rem; color: var(--muted); margin: 2px 0 10px; }
+  .rep-card .comp b { color: var(--ink); font-weight: 600; }
+  .rep-card .val {
+    background: #f4f7fb; border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 1.15rem; font-weight: 900; color: var(--ink);
+    font-variant-numeric: tabular-nums; text-align: center;
+  }
+  .rep-card.neg .val { color: #c2410c; }
+  .rep-card.final { border: 2px solid var(--primary); background: var(--primary-soft); }
+  .rep-card.final h4 { color: var(--primary); font-size: 1.02rem; }
+  .rep-card.final .val { font-size: 1.45rem; color: var(--primary); border-color: transparent; background: var(--card); }
+
+  .exp-item {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.82rem; color: var(--muted);
+    padding: 7px 12px; margin-bottom: 5px;
+    background: #fbfcfe; border: 1px solid var(--border); border-radius: 9px;
+  }
+  .exp-item b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .rep-card .warn-line {
+    font-size: 0.85rem; font-weight: 700; color: var(--accent);
+    text-align: center; margin-top: 4px;
+  }
+
+  .promise {
+    text-align: center; margin: 44px 0 52px;
+    background: var(--ink); color: #fff; border-radius: 26px; padding: 44px 26px;
+  }
+  .promise h2 { font-size: 1.35rem; font-weight: 900; margin-bottom: 8px; }
+  .promise p { color: rgba(255,255,255,0.72); max-width: 520px; margin: 0 auto 22px; font-size: 0.95rem; }
+
+  footer { text-align: center; padding: 0 0 44px; color: var(--muted); font-size: 0.8rem; }
+  .err { color: #c2410c; font-size: 0.8rem; text-align: center; margin-top: 8px; display: none; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="logo">Arym <em>Vitals</em></div>
+    <div class="tag">لتجار EasyOrders</div>
+  </header>
+
+  <div class="hero">
+    <div class="pill">جناح النمو الأول لتجار EasyOrders</div>
+    <h1>متجرك يربح أكثر — <mark>بدون منتج جديد واحد</mark></h1>
+    <p class="sub">اعرف ربحك الصافي بالجنيه · افتح أسواقاً بلغات جديدة · صفِّ بضاعتك الراكدة · اضبط إعلانك بالأرقام</p>
+  </div>
+
+  <!-- الشاشة 1: الإدخال -->
+  <div class="screen on" id="screen1">
+    <div class="panel">
+      <details class="acc" open>
+        <summary>💰 الإيرادات <span class="hint">— ما دخل متجرك</span></summary>
+        <div class="acc-body">
+          <div class="field">
+            <label>إجمالي المبيعات <small>(كل الطلبات قبل أي خصم)</small></label>
+            <input type="number" id="sales" placeholder="50,000">
+          </div>
+          <div class="field">
+            <label>قيمة المرتجعات والطلبات الملغاة</label>
+            <input type="number" id="returns" placeholder="2,700">
+          </div>
+        </div>
+      </details>
+
+      <details class="acc" open>
+        <summary>🔥 المصروفات <span class="hint">— كل ما تصرفه لتشغيل البيع</span></summary>
+        <div class="acc-body">
+          <div class="field">
+            <label>قيمة المشتريات هذا الشهر <small>(كل ما دفعته للموردين)</small></label>
+            <input type="number" id="purchases" placeholder="15,000" oninput="liveCogs()">
+          </div>
+          <div class="field">
+            <label>قيمة المخزون المتبقي <small>(البضاعة اللي لسه في المخزن بسعر شرائها)</small></label>
+            <input type="number" id="stock" placeholder="5,800" oninput="liveCogs()">
+          </div>
+          <div class="field" id="cogsField" style="display:none;">
+            <label style="color: var(--primary);">✅ تكلفة البضاعة المباعة <small>(حسبناها لك)</small></label>
+            <input type="text" id="cogs" readonly style="background: var(--primary-soft); font-weight: 800; color: var(--primary);">
+          </div>
+          <div class="field">
+            <label>مصروف الإعلانات <small>(فيسبوك + تيك توك + غيرهما)</small></label>
+            <input type="number" id="ads" placeholder="7,400">
+          </div>
+          <div class="field">
+            <label>مصروف الشحن <small>(من جيبك أنت — لا ما دفعه العميل)</small></label>
+            <input type="number" id="ship" placeholder="مثال: الشركة تحاسبك 40ج للطلب × 100 طلب = 4,000">
+          </div>
+        </div>
+      </details>
+
+      <details class="acc" open>
+        <summary>⚖️ بيانات نقطة التعادل <span class="hint">— لحساب كم تحتاج تبيع</span></summary>
+        <div class="acc-body">
+          <div class="field">
+            <label>المصاريف الثابتة شهرياً <small>(إيجار + رواتب + اشتراكات)</small></label>
+            <input type="number" id="fixed" placeholder="8,000">
+          </div>
+          <div class="field">
+            <label>متوسط سعر الطلب</label>
+            <input type="number" id="aov" placeholder="600">
+          </div>
+          <div class="field">
+            <label>تكلفة الطلب الواحد <small>(بضاعة + تغليف + حصة شحن)</small></label>
+            <input type="number" id="varCost" placeholder="410">
+          </div>
+          <div class="field">
+            <label>الإعلان لكل طلب</label>
+            <input type="number" id="adPerOrder" placeholder="95">
+          </div>
+        </div>
+      </details>
+
+      <button class="btn block" onclick="calc()">📊 اعرض النتيجة — تقرير الربحية ونقطة التعادل</button>
+      <div class="err" id="err">من فضلك أدخل على الأقل المبيعات لإكمال التقرير</div>
+      <span class="note">مجاني — بدون تسجيل — بياناتك لا تُحفظ في أي مكان</span>
+    </div>
+  </div>
+
+  <!-- الشاشة 2: النتائج -->
+  <div class="screen" id="screen2">
+    <div class="auto-banner">
+      ⚡ <b>هذه الأرقام أدخلتها يدوياً — تخيّلها تلقائية:</b>
+      عند الاشتراك نربط أدواتنا بمتجرك فتحصل على تقرير الربحية ونقطة التعادل
+      <b>لكل منتج على حدة — بدون إدخال رقم واحد</b>
+    </div>
+
+    <div class="two-cols">
+
+      <div class="col">
+        <div class="col-head">📊 تقرير الربحية الشهري</div>
+        <div class="panel" style="padding: 18px;" id="profitReport"></div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">⚖️ تقرير نقطة التعادل</div>
+        <div class="panel" style="padding: 18px;" id="bepReport"></div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top: 18px;">
+      <button class="btn ghost" onclick="backToInput()">✏️ تعديل الأرقام</button>
+    </div>
+  </div>
+
+  <div class="promise">
+    <h2>جاهز تعرف أين تخسر وأين تربح؟</h2>
+    <p>هذه الحاسبة المبسطة — النسخة الكاملة ترتبط بمتجرك وتحسب ربح كل منتج على حدة تلقائياً.</p>
+    <button class="btn accent" id="waMain">ابدأ مجاناً عبر واتساب</button>
+  </div>
+
+  <footer>Arym Vitals — مصنوع لتجار EasyOrders</footer>
+</div>
+
+<script>
+  var PHONE = "201000000000";
+  function fmt(n) { return Math.round(n).toLocaleString("ar-EG"); }
+  function wa(msg) { return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg); }
+  function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+  function card(title, comp, valText, cls) {
+    return '<div class="rep-card ' + (cls || "") + '">' +
+      '<h4>' + title + '</h4>' +
+      '<div class="comp">' + comp + '</div>' +
+      '<div class="val">' + valText + '</div></div>';
+  }
+  function expItem(label, v) {
+    return '<div class="exp-item"><span>' + label + '</span><b>' + fmt(v) + '</b></div>';
+  }
+
+  function liveCogs() {
+    var purchases = val("purchases"), stock = val("stock");
+    var field = document.getElementById("cogsField");
+    if (purchases > 0 && stock >= 0 && purchases >= stock) {
+      field.style.display = "block";
+      document.getElementById("cogs").value = fmt(purchases - stock) + " ج.م";
+    } else {
+      field.style.display = "none";
+      document.getElementById("cogs").value = "";
+    }
+  }
+
+  function calc() {
+    var gross = val("sales");
+    if (gross <= 0) {
+      document.getElementById("err").style.display = "block";
+      return;
+    }
+    document.getElementById("err").style.display = "none";
+
+    var returns = val("returns");
+    var net = gross - returns;
+    var returnRate = (returns / gross * 100).toFixed(1);
+    var purchases = val("purchases"), stock = val("stock");
+    var cost = Math.max(0, purchases - stock);
+    var ads = val("ads"), ship = val("ship");
+    var expenses = cost + ads + ship;
+    var profit = net - expenses;
+    var margin = net > 0 ? (profit / net * 100).toFixed(1) : "0";
+    var warn;
+    if (margin < 10) warn = "هامشك أقل من الآمن — معظم التجار يخسرون هنا دون أن يشعروا";
+    else if (margin < 20) warn = "هامش مقبول — لكن هناك فرص واضحة لتحسينه";
+    else warn = "هامش جيد! هل تعرف كيف تحافظ عليه وتنمّيه؟";
+
+    var returnInsight;
+    if (returns > 0) {
+      if (returnRate > 8) returnInsight = "معدل مرتجعاتك " + returnRate + "% — مرتفع جداً! الطبيعي 4% — كل نقطة تخفضها توفر " + fmt(gross / 100) + " ج.م";
+      else if (returnRate > 4) returnInsight = "معدل مرتجعاتك " + returnRate + "% — أعلى قليلاً من الطبيعي (4%)";
+      else returnInsight = "معدل مرتجعاتك " + returnRate + "% — ممتاز، أقل من المعدل الطبيعي";
+    } else {
+      returnInsight = "لم تدخل مرتجعات — إن كانت هناك، أضفها لتقرير أدق";
+    }
+
+    var stockInsight = stock > 0
+      ? "عندك " + fmt(stock) + " ج.م بضاعة راكدة في مخزنك — نساعدك تسيّلها وتحولها لكاش"
+      : "";
+
+    document.getElementById("profitReport").innerHTML =
+      card("إجمالي المبيعات", "كل الطلبات قبل أي خصم", fmt(gross) + " ج.م") +
+      (returns > 0 ? card("المرتجعات والملغاة", "طلبات لم تكتمل", "− " + fmt(returns) + " ج.م", "neg") : "") +
+      card("صافي المبيعات", "المكون: <b>الإجمالي − المرتجعات</b>", fmt(net) + " ج.م") +
+      '<div class="rep-card neg">' +
+        '<h4>المصروفات</h4>' +
+        '<div class="comp">جميع البنود بكل أنواعها</div>' +
+        (cost > 0 ? expItem("تكلفة البضاعة المباعة", cost) : "") +
+        (ads > 0 ? expItem("مصروف الإعلانات", ads) : "") +
+        (ship > 0 ? expItem("مصروف الشحن", ship) : "") +
+        '<div class="exp-total"><span>إجمالي المصروفات</span><b>' + fmt(expenses) + ' ج.م</b></div>' +
+      '</div>' +
+      card("النتيجة — صافي الربح", "ما تبقى لك فعلياً", fmt(profit) + " ج.م", "final") +
+      '<div class="warn-line">' + returnInsight + '</div>' +
+      (stockInsight ? '<div class="warn-line">' + stockInsight + '</div>' : "") +
+      '<div class="warn-line">' + warn + '</div>' +
+      '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
+      wa("أريد زيادة ربح متجري — صافي ربحي " + fmt(profit) + " ج.م بهامش " + margin + "% ومعدل مرتجعات " + returnRate + "%" + (stock > 0 ? " وعندي " + fmt(stock) + " ج.م مخزون راكد" : "")) + '">عايز تعرف إزاي تزوّد الرقم ده؟ كلمنا</a>';
+
+    var fixed = val("fixed"), aov = val("aov"), vc = val("varCost"), ad = val("adPerOrder");
+    var bepBox = document.getElementById("bepReport");
+    if (fixed > 0 && aov > 0) {
+      var unit = aov - vc - ad;
+      if (unit <= 0) {
+        bepBox.innerHTML =
+          card("ربح الطلب الواحد", "سعر الطلب − تكلفته − إعلانه", fmt(unit) + " ج.م", "neg") +
+          card("النتيجة — تحذير تسعير", "كل طلب يبيعه الآن يزيد الخسارة", "راجع تسعيرك", "final") +
+          '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
+          wa("طلبي أقل من تكلفته — أحتاج مراجعة تسعير متجري عاجلاً") + '">ساعوني في مراجعة التسعير</a>';
+      } else {
+        var orders = Math.ceil(fixed / unit);
+        var daily = Math.ceil(orders / 30);
+        var w;
+        if (orders > 300) w = "نقطة تعادل مرتفعة — نراجع معك التكاليف خطوة بخطوة";
+        else if (orders > 120) w = "قابلة للتحقيق بخطة إعلانية مضبوطة";
+        else w = "وضع ممتاز للنمو — كل طلب فوق " + orders + " ربح صافي";
+        bepBox.innerHTML =
+          card("مصاريفك الثابتة", "المكونات: <b>الإيجار + الرواتب + الاشتراكات</b>", fmt(fixed) + " ج.م", "neg") +
+          card("ربح الطلب الواحد", "المكون: <b>سعر الطلب − تكلفته − إعلانه</b>", fmt(unit) + " ج.م") +
+          card("الطلبات المطلوبة شهرياً", "المكون: <b>الثابت ÷ ربح الطلب</b>", orders + " طلب") +
+          card("النتيجة — مبيعات التعادل الشهرية", "بعدها يبدأ ربحك الصافي", fmt(orders * aov) + " ج.م", "final") +
+          '<div class="warn-line">أي ما يعادل ' + daily + ' طلب يومياً</div>' +
+          '<a class="btn accent block" style="margin-top:12px;" target="_blank" rel="noopener" href="' +
+          wa("أريد تجاوز نقطة التعادل — نقطة تعادلي " + orders + " طلب شهرياً") + '">عايز أتجاوز نقطة التعادل؟ كلمنا</a>';
+      }
+    } else {
+      bepBox.innerHTML =
+        '<div class="rep-card"><h4>لم تُدخل بيانات التعادل</h4>' +
+        '<div class="comp">عد للشاشة السابقة وأكمل قسم ⚖️ لترى تقرير نقطة التعادل</div></div>' +
+        '<button class="btn ghost block" onclick="backToInput()">✏️ أكمل البيانات</button>';
+    }
+
+    document.getElementById("screen1").classList.remove("on");
+    document.getElementById("screen2").classList.add("on");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function backToInput() {
+    document.getElementById("screen2").classList.remove("on");
+    document.getElementById("screen1").classList.add("on");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.getElementById("waMain").onclick = function () {
+    window.open(wa("أريد تجربة Arym Vitals على متجري"), "_blank");
+  };
+</script>
+</body>
+</html>
